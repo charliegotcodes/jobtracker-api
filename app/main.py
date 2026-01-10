@@ -12,7 +12,11 @@ app = FastAPI(title="Job Tracker API")
 
 @app.on_event("startup")
 def on_startup():
-    SQLModel.metadata.create_all(engine)
+    try:
+        SQLModel.metadata.create_all(engine)
+        print("DB tables ensured")
+    except Exception as e:
+        print("DB init failed (non-fatal):", e)
 
 @app.get("/health")
 def health():
