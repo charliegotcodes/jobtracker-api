@@ -31,9 +31,9 @@ def list_events(limit: int = Query(default= 25, ge=1, le=100), offset: int = Que
       if category:
          base_stmt = base_stmt.where(JobEvent.category == category)
       if company:
-         base_stmt = base_stmt.where(JobEvent.company == company)
+         base_stmt = base_stmt.where(JobEvent.company.ilike(f"%{company}%"))
       if position:
-         base_stmt = base_stmt.where(JobEvent.position == position)
+         base_stmt = base_stmt.where(JobEvent.position.ilike(f"%{position}%"))
    
       count_stmt = select(func.count()).select_from(base_stmt.subquery())
       total = session.exec(count_stmt).one()
@@ -42,10 +42,7 @@ def list_events(limit: int = Query(default= 25, ge=1, le=100), offset: int = Que
 
       items = session.exec(stmt).all()
 
-      return PaginatedEvents(events=items, limit=limit, offset=offset, total=total, has_more=len(offset + limit)  < total,)
-   
-def get_events(session: Session, limit: int = 100):
-   return session.exec(JobEvent).limit(limit).all()
+      return PaginatedEvents(events=items, limit=limit, offset=offset, total=total, has_more=offset + limit < total,)
 
 
 @app.post("/events", status_code=201)
