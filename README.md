@@ -3,17 +3,17 @@
 A RESTful backend service for ingesting, storing, and managing job application lifecycle events.
 
 ## Overview
-The JobTracker API is designed to persist job-related lifecycle events (e.g. applied, interview, rejection, offer) in an idempotent and structured way.
-
-The project focuses on backend correctness, data integrity, and maintainable API-driven design, rather than UI concerns. It models real-world patterns commonly found in production systems that ingest external events.
+The JobTracker API persists job-related lifecycle events (e.g., Applied, Interview, Rejected, Offer) in a structured and idempotent manner.
+This project focuses on backend correctness, data integrity, and maintainable API design. It models common production patterns found in systems that ingest external event data.
 
 ## Key Features
-- Idempotent event ingestion to prevent duplicate writes
-- Relational data modeling using PostgreSQL
-- Pagination and filtering for event retrieval
-- Input validation and structured error handling
-- Environment-based configuration for flexible local and future deployment
+- Idempotent event ingestion using external event identifiers to prevent duplicate writes
+- Relational data modeling using SQLModel with PostgreSQL (SQLite supported for local development)
+- Filtering and pagination for querying lifecycle events
+- Request validation using Pydantic schemas
+- Structured error handling and logging
 
+Environment-based configuration for flexible local and deployment setups
 ## Tech Stack
 - Python
 - FastAPI
@@ -22,10 +22,10 @@ The project focuses on backend correctness, data integrity, and maintainable API
 
 ## High-Level Architecture
 - **API layer** handles request validation and routing
-- **Service layer** enforces idempotency and domain rules
+- **Service layer** enforces idempotency and lifecycle rules
 - **Persistence layer** stores normalized lifecycle events in a relational schema
 
-The service is designed to be stateless, allowing it to integrate cleanly with upstream ingestion services and support future deployment patterns.
+The service is designed to be stateless, allowing it to integrate cleanly with upstream ingestion services via RESTful endpoints.
 
 ## Getting Started
 
