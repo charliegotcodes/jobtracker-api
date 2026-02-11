@@ -38,4 +38,6 @@ The service is designed to be stateless, allowing it to integrate cleanly with u
 2. Copy `.env.example` to `.env` and adjust values for your local environment
 3. Install dependencies:
    ```bash
+
    pip install -r requirements.txt
+
