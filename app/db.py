@@ -1,8 +1,13 @@
-from sqlmodel import SQLModel, create_engine 
 import os
-from dotenv import load_dotenv
-load_dotenv()
+from sqlalchemy import create_engine
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 
-engine = create_engine(DATABASE_URL, echo=True, connect_args={"sslmode": "require"})
+# local default = disable; production can set require
+DB_SSLMODE = os.getenv("DB_SSLMODE", "disable")
+
+connect_args = {}
+if DB_SSLMODE == "require":
+    connect_args = {"sslmode": "require"}
+
+engine = create_engine(DATABASE_URL, echo=True, connect_args=connect_args)
